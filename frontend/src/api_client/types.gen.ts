@@ -11,6 +11,18 @@ export type HttpValidationError = {
 };
 
 /**
+ * MetadataGetTokenizerResponse
+ */
+export type MetadataGetTokenizerResponse = {
+    /**
+     * Id To Str
+     */
+    id_to_str: {
+        [key: string]: string;
+    };
+};
+
+/**
  * RolloutGetResponse
  */
 export type RolloutGetResponse = {
@@ -93,6 +105,36 @@ export type ValidationError = {
      */
     type: string;
 };
+
+export type GetTokenizerApiMetadataTokenizerGetData = {
+    body?: never;
+    path?: never;
+    query: {
+        /**
+         * Run Id
+         */
+        run_id: string;
+    };
+    url: '/api/metadata/tokenizer';
+};
+
+export type GetTokenizerApiMetadataTokenizerGetErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetTokenizerApiMetadataTokenizerGetError = GetTokenizerApiMetadataTokenizerGetErrors[keyof GetTokenizerApiMetadataTokenizerGetErrors];
+
+export type GetTokenizerApiMetadataTokenizerGetResponses = {
+    /**
+     * Successful Response
+     */
+    200: MetadataGetTokenizerResponse;
+};
+
+export type GetTokenizerApiMetadataTokenizerGetResponse = GetTokenizerApiMetadataTokenizerGetResponses[keyof GetTokenizerApiMetadataTokenizerGetResponses];
 
 export type GetApiSampleSampleIndexGetData = {
     body?: never;
