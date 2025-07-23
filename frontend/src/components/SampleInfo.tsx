@@ -18,42 +18,32 @@ const replaceSpecialChars = (text: string) => {
 };
 
 export function SampleInfo() {
-  const {
-    data: sampleData,
-    isLoading: isSampleLoading,
-    isError: isSampleError,
-    error: sampleError,
-  } = useAtomValue(sampleQueryAtom);
-  const {
-    data: tokenizerData,
-    isLoading: isTokenizerLoading,
-    isError: isTokenizerError,
-    error: tokenizerError,
-  } = useAtomValue(tokenizerQueryAtom);
+  const sampleQuery = useAtomValue(sampleQueryAtom);
+  const tokenizerQuery = useAtomValue(tokenizerQueryAtom);
 
-  if (isSampleLoading || isTokenizerLoading) {
+  if (sampleQuery.isLoading || tokenizerQuery.isLoading) {
     return <div>Loading...</div>;
   }
 
-  if (isSampleError) {
-    return <div>Error loading sample: {JSON.stringify(sampleError)}</div>;
+  if (sampleQuery.isError) {
+    return <div>Error loading sample: {JSON.stringify(sampleQuery.error)}</div>;
   }
 
-  if (isTokenizerError) {
-    return <div>Error loading tokenizer: {JSON.stringify(tokenizerError)}</div>;
+  if (tokenizerQuery.isError) {
+    return <div>Error loading tokenizer: {JSON.stringify(tokenizerQuery.error)}</div>;
   }
 
-  if (!sampleData) {
+  if (!sampleQuery.data) {
     return null;
   }
 
-  const decodedTokens = sampleData.tokens
-    .map((token) => tokenizerData?.id_to_str[token] ?? `[UNK:${token}]`)
+  const decodedTokens = sampleQuery.data.tokens
+    .map((token) => tokenizerQuery.data?.id_to_str[token] ?? `[UNK:${token}]`)
     .join('');
 
   const cleanedText = replaceSpecialChars(decodedTokens);
 
-  const { tokens, ...otherData } = sampleData;
+  const { tokens, ...otherData } = sampleQuery.data;
 
   return (
     <div>
