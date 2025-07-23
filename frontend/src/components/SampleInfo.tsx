@@ -43,8 +43,6 @@ export function SampleInfo() {
 
   const cleanedText = replaceSpecialChars(decodedTokens);
 
-  const { tokens, ...otherData } = sampleQuery.data;
-
   return (
     <div>
       <div className="mb-4">
@@ -54,7 +52,7 @@ export function SampleInfo() {
         </p>
       </div>
       <pre className="w-full p-4 bg-gray-100 border border-ray-300 rounded-md overflow-x-auto">
-        {JSON.stringify(otherData, null, 2)}
+        {JSON.stringify(sampleQuery.data, null, 2)}
       </pre>
     </div>
   );
