@@ -19,17 +19,16 @@ const replaceSpecialChars = (text: string) => {
 
 interface TokenProps {
   text: string;
-  logProb: number | null;
+  logProb?: number;
   minLogProb: number;
   maxLogProb: number;
-  isResponse: boolean;
 }
 
-const Token: React.FC<TokenProps> = ({ text, logProb, minLogProb, maxLogProb, isResponse }) => {
+const Token: React.FC<TokenProps> = ({ text, logProb, minLogProb, maxLogProb }) => {
   const cleanedText = replaceSpecialChars(text);
   let style = {};
 
-  if (isResponse && logProb !== undefined) {
+  if (logProb !== undefined) {
     const normalizedProb = (logProb - minLogProb) / (maxLogProb - minLogProb);
     const alpha = isNaN(normalizedProb) ? 0 : normalizedProb;
     style = { backgroundColor: `rgba(0, 0, 255, ${alpha})` };
@@ -73,15 +72,14 @@ export function SampleInfo() {
         <h2 className="text-lg font-semibold mb-2">Decoded Tokens</h2>
         <p className="w-full p-4 bg-gray-50 border border-gray-200 rounded-md whitespace-pre-wrap break-words">
           {tokens.map((token, index) => {
-            const responseIndex = (index >= requestLength) ? (index - requestLength) : null;
+            const responseIndex = (index >= requestLength) ? (index - requestLength) : undefined;
             return (
               <Token
                 key={index}
                 text={id_to_str[token] ?? `[UNK:${token}]`}
-                logProb={responseIndex !== null ? log_probs[responseIndex] : null}
+                logProb={responseIndex !== undefined ? log_probs[responseIndex] : undefined}
                 minLogProb={minLogProb}
                 maxLogProb={maxLogProb}
-                isResponse={loss_masks[index] === 1} />
             );
           })}
         </p>
