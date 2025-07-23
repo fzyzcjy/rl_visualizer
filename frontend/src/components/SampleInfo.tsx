@@ -74,7 +74,7 @@ export function SampleInfo() {
     <div>
       <div className="mb-4">
         <h2 className="text-lg font-semibold mb-2">Decoded Tokens</h2>
-        <p className="w-full p-4 bg-gray-50 border border-gray-200 rounded-md whitespace-pre-wrap break-words">
+        <div className="w-full p-4 bg-gray-50 border border-gray-200 rounded-md whitespace-pre-wrap break-words">
           {tokens.map((token, index) => {
             const responseIndex = (index >= requestLength) ? (index - requestLength) : undefined;
             return (
@@ -87,7 +87,7 @@ export function SampleInfo() {
               />
             );
           })}
-        </p>
+        </div>
       </div>
       <pre className="w-full p-4 bg-gray-100 border border-ray-300 rounded-md overflow-x-auto">
         {JSON.stringify(sampleQuery.data, null, 2)}
