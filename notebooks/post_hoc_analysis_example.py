@@ -18,12 +18,11 @@
 # %autoreload 2
 import sys
 sys.path.append('../python')
-import rl_visualizer
+import rl_visualizer.data_loader
 
 # %%
 # TODO improve demo
-dir_base = '/Users/tom/temp/temp_sglang_server2local/20250723013733'
+dir_base = '/Users/tom/temp/temp_sglang_server2local/20250723023936'
 
-# %%
-import torch
-torch.load(open(dir_base + '/train_data/1.pt', 'rb'), map_location=torch.device('cpu'))
+df_primary = rl_visualizer.data_loader.read_dir(dir_base)
+df_primary
