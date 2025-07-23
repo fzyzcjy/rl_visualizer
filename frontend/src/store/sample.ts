@@ -7,7 +7,7 @@ import { atomWithHash } from 'jotai-location';
 
 export const sampleIndexAtom = atomWithHash<number>('sample_index', 0);
 
-export const sampleColorFieldAtom = atom<string>('log_probs');
+export const sampleColorFieldAtom = atom<string>('probs');
 
 export const sampleQueryAtom = atomWithQuery((get) => {
   const runId = get(runIdAtom);
