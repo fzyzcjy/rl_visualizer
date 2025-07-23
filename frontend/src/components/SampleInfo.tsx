@@ -5,7 +5,8 @@ import { sampleQueryAtom } from '@/store/sample';
 import { tokenizerQueryAtom } from '@/store/metadata';
 
 const tokenReplacementMap: Record<string, string> = {
-  'Ċ': '\n',
+  'Ċ': '
+',
   'Ġ': ' ',
 };
 
@@ -19,18 +20,18 @@ const replaceMulti = (text: string, replacementMap: Record<string, string>) => {
 
 interface TokenProps {
   text: string;
-  logProb?: number;
-  minLogProb: number;
-  maxLogProb: number;
+  colorValue?: number;
+  minColorValue: number;
+  maxColorValue: number;
 }
 
-const Token: React.FC<TokenProps> = ({ text, logProb, minLogProb, maxLogProb }) => {
+const Token: React.FC<TokenProps> = ({ text, colorValue, minColorValue, maxColorValue }) => {
   const cleanedText = replaceMulti(text, tokenReplacementMap);
   let style = {};
 
-  if (logProb !== undefined) {
-    const normalizedProb = (logProb - minLogProb) / (maxLogProb - minLogProb);
-    const alpha = isNaN(normalizedProb) ? 0 : normalizedProb;
+  if (colorValue !== undefined) {
+    const normalizedValue = (colorValue - minColorValue) / (maxColorValue - minColorValue);
+    const alpha = isNaN(normalizedValue) ? 0 : normalizedValue;
     style = { backgroundColor: `rgba(0, 0, 255, ${alpha})` };
   }
 
@@ -61,8 +62,8 @@ export function SampleInfo() {
   const { id_to_str } = tokenizerQuery.data;
 
   const requestLength = tokens.length - sampleQuery.data.response_length;
-  const minLogProb = Math.min(...log_probs);
-  const maxLogProb = Math.max(...log_probs);
+  const minColorValue = Math.min(...log_probs);
+  const maxColorValue = Math.max(...log_probs);
 
   const { tokens: _, ...otherData } = sampleQuery.data;
 
@@ -77,9 +78,9 @@ export function SampleInfo() {
               <Token
                 key={index}
                 text={id_to_str[token] ?? `[UNK:${token}]`}
-                logProb={responseIndex !== undefined ? log_probs[responseIndex] : undefined}
-                minLogProb={minLogProb}
-                maxLogProb={maxLogProb}
+                colorValue={responseIndex !== undefined ? log_probs[responseIndex] : undefined}
+                minColorValue={minColorValue}
+                maxColorValue={maxColorValue}
               />
             );
           })}
