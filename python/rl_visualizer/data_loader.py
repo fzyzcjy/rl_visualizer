@@ -10,11 +10,10 @@ def read_dir(dir_base):
 
 def _read_raw(dir_base):
     dir_base = Path(dir_base)
-
-    _read_folder(dir_base / "rollout_data")
-    _read_folder(dir_base / "train_data")
-
-    return TODO
+    return dict(
+        rollout_data=_read_folder(dir_base / "rollout_data"),
+        train_data=_read_folder(dir_base / "train_data"),
+    )
 
 
 def _read_folder(directory: Path):
