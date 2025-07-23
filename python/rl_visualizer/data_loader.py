@@ -1,6 +1,8 @@
 import pickle
 from pathlib import Path
 
+import torch
+
 
 def read_dir(dir_base):
     TODO
@@ -16,4 +18,4 @@ def _read_raw(dir_base)
 
 
 def _read_folder(directory: Path):
-    return [pickle.load(p) for p in sorted(list(directory.glob("*.pt")))]
+    return [torch.load(p, map_location=torch.device("cpu")) for p in sorted(list(directory.glob("*.pt")))]
