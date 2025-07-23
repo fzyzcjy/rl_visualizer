@@ -59,6 +59,10 @@ export type SampleGetResponse = {
      */
     response: string;
     /**
+     * Response Length
+     */
+    response_length: number;
+    /**
      * Reward Value
      */
     reward_value: number;
