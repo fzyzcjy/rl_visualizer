@@ -39,9 +39,41 @@ export type SampleGetResponse = {
      */
     prompt: string;
     /**
+     * Tokens
+     */
+    tokens: Array<number>;
+    /**
      * Response
      */
     response: string;
+    /**
+     * Reward Value
+     */
+    reward_value: number;
+    /**
+     * Status
+     */
+    status: string;
+    /**
+     * Loss Masks
+     */
+    loss_masks: Array<number>;
+    /**
+     * Ref Log Probs
+     */
+    ref_log_probs: Array<number>;
+    /**
+     * Log Probs
+     */
+    log_probs: Array<number>;
+    /**
+     * Advantages
+     */
+    advantages: Array<number>;
+    /**
+     * Returns
+     */
+    returns: Array<number>;
 };
 
 /**
