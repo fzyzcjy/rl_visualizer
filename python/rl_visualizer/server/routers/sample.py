@@ -15,6 +15,7 @@ class SampleGetResponse(BaseModel):
     prompt: str
     tokens: List[int]
     response: str
+    response_length: int
     reward_value: float
     status: str
     loss_masks: List[int]
