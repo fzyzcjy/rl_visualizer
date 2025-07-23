@@ -17,6 +17,27 @@ const replaceSpecialChars = (text: string) => {
   return newText;
 };
 
+interface TokenProps {
+  text: string;
+  logProb?: number;
+  minLogProb: number;
+  maxLogProb: number;
+  isResponse: boolean;
+}
+
+const Token: React.FC<TokenProps> = ({ text, logProb, minLogProb, maxLogProb, isResponse }) => {
+  const cleanedText = replaceSpecialChars(text);
+  let style = {};
+
+  if (isResponse && logProb !== undefined) {
+    const normalizedProb = (logProb - minLogProb) / (maxLogProb - minLogProb);
+    const alpha = isNaN(normalizedProb) ? 0 : normalizedProb;
+    style = { backgroundColor: `rgba(0, 0, 255, ${alpha})` };
+  }
+
+  return <span style={style}>{cleanedText}</span>;
+};
+
 export function SampleInfo() {
   const sampleQuery = useAtomValue(sampleQueryAtom);
   const tokenizerQuery = useAtomValue(tokenizerQueryAtom);
@@ -33,26 +54,38 @@ export function SampleInfo() {
     return <div>Error loading tokenizer: {JSON.stringify(tokenizerQuery.error)}</div>;
   }
 
-  if (!sampleQuery.data) {
+  if (!sampleQuery.data || !tokenizerQuery.data) {
     return null;
   }
 
-  const decodedTokens = sampleQuery.data.tokens
-    .map((token) => tokenizerQuery.data?.id_to_str[token] ?? `[UNK:${token}]`)
-    .join('');
+  const { tokens, log_probs, loss_masks } = sampleQuery.data;
+  const { id_to_str } = tokenizerQuery.data;
 
-  const cleanedText = replaceSpecialChars(decodedTokens);
+  const responseLogProbs = log_probs.filter((_, index) => loss_masks[index] === 1);
+  const minLogProb = Math.min(...responseLogProbs);
+  const maxLogProb = Math.max(...responseLogProbs);
+
+  const { tokens: _, ...otherData } = sampleQuery.data;
 
   return (
     <div>
       <div className="mb-4">
         <h2 className="text-lg font-semibold mb-2">Decoded Tokens</h2>
         <p className="w-full p-4 bg-gray-50 border border-gray-200 rounded-md whitespace-pre-wrap break-words">
-          {cleanedText}
+          {tokens.map((token, index) => (
+            <Token
+              key={index}
+              text={id_to_str[token] ?? `[UNK:${token}]`}
+              logProb={log_probs[index]}
+              minLogProb={minLogProb}
+              maxLogProb={maxLogProb}
+              isResponse={loss_masks[index] === 1}
+            />
+          ))}
         </p>
       </div>
       <pre className="w-full p-4 bg-gray-100 border border-ray-300 rounded-md overflow-x-auto">
-        {JSON.stringify(sampleQuery.data, null, 2)}
+        {JSON.stringify(otherData, null, 2)}
       </pre>
     </div>
   );
