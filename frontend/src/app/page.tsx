@@ -1,7 +1,7 @@
 'use client';
 
 import { RolloutIdInput } from '@/components/RolloutIdInput';
-import { RolloutTable } from '@/components/RolloutTable';
+import { RolloutSamplesTable } from '@/components/RolloutSamplesTable';
 import { rolloutQueryAtom } from '@/store/rollout';
 import { useAtomValue } from 'jotai';
 
@@ -21,7 +21,7 @@ export default function HomePage() {
         <div className="mt-4 w-full">
           {isLoading && <div>Loading...</div>}
           {isError && <div>Error: {JSON.stringify(error)}</div>}
-          {data && <RolloutTable data={data.table_rows} />}
+          {data && <RolloutSamplesTable data={data.table_rows} />}
         </div>
       </div>
     </div>

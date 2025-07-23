@@ -14,7 +14,7 @@ interface RolloutSamplesTableProps {
   data: Row[];
 }
 
-export function RolloutTable({ data }: RolloutTableProps) {
+export function RolloutSamplesTable({ data }: RolloutSamplesTableProps) {
   const columns = useMemo<ColumnDef<Row>[]>(() => {
     if (data.length === 0) {
       return [];
