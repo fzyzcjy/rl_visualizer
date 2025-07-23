@@ -10,6 +10,8 @@ dependencies = [
     "uvicorn[standard]>=0.24.0",
     "pydantic>=2.0.0",
     "polars>=1.31.0",
+    'torch<=2.1.2; sys_platform == "darwin" and platform_machine == "x86_64"',
+    'torch>=2.0.0; sys_platform != "darwin" or platform_machine != "x86_64"'
 ]
 requires-python = ">=3.9"
 
