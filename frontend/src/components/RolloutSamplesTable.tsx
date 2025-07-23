@@ -45,7 +45,9 @@ export function RolloutSamplesTable({ data }: RolloutSamplesTableProps) {
   const handleRowClick = (rowData: Row) => {
     const sampleIndex = rowData.sample_index;
     if (sampleIndex !== undefined && typeof sampleIndex === 'number') {
-      router.push(`/sample#sample_index=${sampleIndex}`);
+      const params = new URLSearchParams(window.location.hash.slice(1));
+      params.set('sample_index', String(sampleIndex));
+      router.push(`/sample#${params.toString()}`);
     }
   };
 
