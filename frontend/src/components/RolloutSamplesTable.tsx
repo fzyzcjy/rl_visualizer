@@ -10,7 +10,7 @@ import { useMemo } from 'react';
 
 type Row = Record<string, unknown>;
 
-interface RolloutTableProps {
+interface RolloutSamplesTableProps {
   data: Row[];
 }
 
