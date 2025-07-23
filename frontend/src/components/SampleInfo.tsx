@@ -57,7 +57,7 @@ export function SampleInfo() {
     return null;
   }
 
-  const { tokens, log_probs, loss_masks } = sampleQuery.data;
+  const { tokens, log_probs } = sampleQuery.data;
   const { id_to_str } = tokenizerQuery.data;
 
   const requestLength = tokens.length - sampleQuery.data.response_length;
