@@ -1,3 +1,4 @@
+import polars as pl
 from fastapi import APIRouter, Depends, Query
 from ..data_source import DataSource, get_data_source
 from pydantic import BaseModel
@@ -8,7 +9,11 @@ router = APIRouter(
 )
 
 class SampleGetResponse(BaseModel):
-    pass
+    rollout_id: int
+    sample_index: int
+    prompt: str
+    response: str
+    # TODO more
 
 @router.get("/{sample_index}")
 def get(
@@ -16,4 +21,7 @@ def get(
     run_id: str = Query(...),
     data_source: DataSource = Depends(get_data_source)
 ) -> SampleGetResponse:
-    return TODO
+    df = data_source.get(run_id)
+    df = df.filter(pl.col("sample_index") == sample_index)
+    assert len(df) == 1
+    return SampleGetResponse(**df.to_dicts()[0])
