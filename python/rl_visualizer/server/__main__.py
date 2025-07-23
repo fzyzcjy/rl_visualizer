@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routers import sample, step
+from .routers import sample, rollout
 from .data_source import DataSource
 
 app = FastAPI(title="RL Visualizer", version="1.0.0")
@@ -14,7 +14,7 @@ app.add_middleware(
 )
 
 app.include_router(sample.router)
-app.include_router(step.router)
+app.include_router(rollout.router)
 
 @app.on_event("startup")
 def startup_event():
