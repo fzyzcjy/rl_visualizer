@@ -1,3 +1,3 @@
-import { atomWithHash } from 'jotai/utils';
+import { atomWithHash } from 'jotai-location';
 
 export const runIdAtom = atomWithHash<string>('runId', '');
