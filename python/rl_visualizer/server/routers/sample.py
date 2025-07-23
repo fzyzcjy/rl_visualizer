@@ -1,3 +1,4 @@
+import numpy as np
 from typing import List
 import polars as pl
 from fastapi import APIRouter, Depends, Query
@@ -21,6 +22,8 @@ class SampleGetResponse(BaseModel):
     loss_masks: List[int]
     ref_log_probs: List[float]
     log_probs: List[float]
+    ref_probs: List[float]
+    probs: List[float]
     advantages: List[float]
     returns: List[float]
     # TODO more
@@ -34,4 +37,7 @@ def get(
     df = data_source.get(run_id)
     df = df.filter(pl.col("sample_index") == sample_index)
     assert len(df) == 1
-    return SampleGetResponse(**df.to_dicts()[0])
+    data = df.to_dicts()[0]
+    data["probs"] = np.exp(data["log_probs"]).tolist()
+    data["ref_probs"] = np.exp(data["ref_log_probs"]).tolist()
+    return SampleGetResponse(**data)
