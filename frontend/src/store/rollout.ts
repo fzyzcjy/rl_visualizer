@@ -12,16 +12,12 @@ export const rolloutQueryAtom = atomWithQuery((get) => {
   const rolloutId = get(rolloutIdAtom);
   return {
     queryKey: ['rollout', runId, rolloutId],
-    queryFn: () => {
-      if (!runId || rolloutId === null) {
-        return null;
-      }
-      return unwrapApiResult(
-        getApiRolloutRolloutIdGet({
-          path: { rollout_id: rolloutId },
-          query: { run_id: runId },
-        })
-      );
-    },
+    queryFn: () => unwrapApiResult(
+      getApiRolloutRolloutIdGet({
+        path: { rollout_id: rolloutId },
+        query: { run_id: runId },
+      })
+    ),
+    enabled: !!runId && rolloutId !== null,
   };
 });
