@@ -1,4 +1,4 @@
-import { assert } from '@/utils/assert';
+import { assert } from '@/utils/misc';
 import {
   ColumnDef,
   flexRender,
