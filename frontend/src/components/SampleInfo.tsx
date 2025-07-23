@@ -19,7 +19,7 @@ const replaceSpecialChars = (text: string) => {
 
 interface TokenProps {
   text: string;
-  logProb?: number;
+  logProb: number | null;
   minLogProb: number;
   maxLogProb: number;
   isResponse: boolean;
@@ -61,9 +61,9 @@ export function SampleInfo() {
   const { tokens, log_probs, loss_masks } = sampleQuery.data;
   const { id_to_str } = tokenizerQuery.data;
 
-  const responseLogProbs = log_probs.filter((_, index) => loss_masks[index] === 1);
-  const minLogProb = Math.min(...responseLogProbs);
-  const maxLogProb = Math.max(...responseLogProbs);
+  const requestLength = tokens.length - sampleQuery.data.response_length;
+  const minLogProb = Math.min(...log_probs);
+  const maxLogProb = Math.max(...log_probs);
 
   const { tokens: _, ...otherData } = sampleQuery.data;
 
@@ -72,16 +72,18 @@ export function SampleInfo() {
       <div className="mb-4">
         <h2 className="text-lg font-semibold mb-2">Decoded Tokens</h2>
         <p className="w-full p-4 bg-gray-50 border border-gray-200 rounded-md whitespace-pre-wrap break-words">
-          {tokens.map((token, index) => (
-            <Token
-              key={index}
-              text={id_to_str[token] ?? `[UNK:${token}]`}
-              logProb={log_probs[index]}
-              minLogProb={minLogProb}
-              maxLogProb={maxLogProb}
-              isResponse={loss_masks[index] === 1}
-            />
-          ))}
+          {tokens.map((token, index) => {
+            const responseIndex = (index >= requestLength) ? (index - requestLength) : null;
+            return (
+              <Token
+                key={index}
+                text={id_to_str[token] ?? `[UNK:${token}]`}
+                logProb={responseIndex !== null ? log_probs[responseIndex] : null}
+                minLogProb={minLogProb}
+                maxLogProb={maxLogProb}
+                isResponse={loss_masks[index] === 1} />
+            );
+          })}
         </p>
       </div>
       <pre className="w-full p-4 bg-gray-100 border border-ray-300 rounded-md overflow-x-auto">
