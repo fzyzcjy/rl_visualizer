@@ -16,7 +16,6 @@ class MetadataGetTokenizerResponse(BaseModel):
 @router.get("/tokenizer")
 def get_tokenizer(
     run_id: str = Query(...),
-    data_source: DataSource = Depends(get_data_source)
 ) -> MetadataGetTokenizerResponse:
     tokenizer = AutoTokenizer.from_pretrained(run_id + "/tokenizer")
     return MetadataGetTokenizerResponse(
