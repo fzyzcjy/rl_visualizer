@@ -5,8 +5,7 @@ import { sampleQueryAtom } from '@/store/sample';
 import { tokenizerQueryAtom } from '@/store/metadata';
 
 const tokenReplacementMap: Record<string, string> = {
-  'Ċ': '
-',
+  'Ċ': '\n',
   'Ġ': ' ',
 };
 
