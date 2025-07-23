@@ -16,7 +16,8 @@ def _read_raw(dir_base):
 
 
 def _read_folder(directory: Path):
-    return (
-        torch.load(p, map_location=torch.device("cpu"))
+    return [
+        # TODO use weight_only=True
+        torch.load(p, map_location=torch.device("cpu"), weights_only=False)
         for p in sorted(list(directory.glob("*.pt")))
-    )
+    ]
