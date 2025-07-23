@@ -11,3 +11,8 @@ class DataSource:
     
     def _load(self, path: str):
         return data_loader.read_dir(path)
+
+_INSTANCE = DataSource()
+
+def get_data_source():
+    return _INSTANCE
