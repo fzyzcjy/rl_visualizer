@@ -1,1 +1,3 @@
-import { atomWithQuery } from "jotai-tanstack-query";
+import { atom } from "jotai";
+
+export const runIdAtom = atom<string | null>(null);
