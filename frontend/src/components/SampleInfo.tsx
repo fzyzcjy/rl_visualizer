@@ -6,6 +6,7 @@ import { tokenizerQueryAtom } from '@/store/metadata';
 import { replaceMulti } from '@/utils/misc';
 import { tokenReplacementMap } from '@/utils/tokenizer_utils';
 import { useState } from 'react';
+import { SampleColorFieldDropdown, sampleColorFieldAtom } from './SampleColorFieldDropdown';
 
 interface TokenProps {
   text: string;
@@ -45,6 +46,7 @@ const Token: React.FC<TokenProps> = ({ text, colorValue, minColorValue, maxColor
 export function SampleInfo() {
   const sampleQuery = useAtomValue(sampleQueryAtom);
   const tokenizerQuery = useAtomValue(tokenizerQueryAtom);
+  const sampleColorField = useAtomValue(sampleColorFieldAtom);
 
   if (sampleQuery.isLoading || tokenizerQuery.isLoading) {
     return <div>Loading...</div>;
@@ -62,16 +64,22 @@ export function SampleInfo() {
     return null;
   }
 
-  const { tokens, log_probs } = sampleQuery.data;
+  const { tokens } = sampleQuery.data;
   const { id_to_str } = tokenizerQuery.data;
 
   const requestLength = tokens.length - sampleQuery.data.response_length;
-  const colorValues = log_probs;
+  const colorValues = sampleQuery.data[sampleColorField as keyof typeof sampleQuery.data] as number[] | undefined;
+
+  if (!colorValues) {
+    return <div>Invalid color value key: {sampleColorField}</div>;
+  }
+
   const minColorValue = Math.min(...colorValues);
   const maxColorValue = Math.max(...colorValues);
 
   return (
     <div>
+      <SampleColorFieldDropdown />
       <div className="mb-4">
         <h2 className="text-lg font-semibold mb-2">Decoded Tokens</h2>
         <div className="w-full p-4 bg-gray-50 border border-gray-200 rounded-md whitespace-pre-wrap break-words">
@@ -81,7 +89,7 @@ export function SampleInfo() {
               <Token
                 key={index}
                 text={id_to_str[token] ?? `[UNK:${token}]`}
-                colorValue={responseIndex !== undefined ? log_probs[responseIndex] : undefined}
+                colorValue={responseIndex !== undefined ? colorValues[responseIndex] : undefined}
                 minColorValue={minColorValue}
                 maxColorValue={maxColorValue}
               />
