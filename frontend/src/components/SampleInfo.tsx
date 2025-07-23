@@ -5,6 +5,7 @@ import { sampleQueryAtom } from '@/store/sample';
 import { tokenizerQueryAtom } from '@/store/metadata';
 import { replaceMulti } from '@/utils/misc';
 import { tokenReplacementMap } from '@/utils/tokenizer_utils';
+import { useState } from 'react';
 
 interface TokenProps {
   text: string;
@@ -14,6 +15,7 @@ interface TokenProps {
 }
 
 const Token: React.FC<TokenProps> = ({ text, colorValue, minColorValue, maxColorValue }) => {
+  const [isHovered, setIsHovered] = useState(false);
   const cleanedText = replaceMulti(text, tokenReplacementMap);
   let style = {};
 
@@ -23,7 +25,21 @@ const Token: React.FC<TokenProps> = ({ text, colorValue, minColorValue, maxColor
     style = { backgroundColor: `rgba(0, 0, 255, ${alpha})` };
   }
 
-  return <span style={style}>{cleanedText}</span>;
+  return (
+    <span
+      className="relative"
+      style={style}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {cleanedText}
+      {isHovered && colorValue !== undefined && (
+        <div className="absolute bottom-full left-1/2 -translate-x-1/2 bg-black text-white px-2 py-1 rounded text-sm whitespace-nowrap z-10 mb-1">
+          {colorValue.toFixed(4)}
+        </div>
+      )}
+    </span>
+  );
 };
 
 export function SampleInfo() {
