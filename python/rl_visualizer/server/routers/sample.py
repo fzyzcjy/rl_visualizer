@@ -1,3 +1,4 @@
+from typing import List
 import polars as pl
 from fastapi import APIRouter, Depends, Query
 from ..data_source import DataSource, get_data_source
@@ -12,7 +13,15 @@ class SampleGetResponse(BaseModel):
     rollout_id: int
     sample_index: int
     prompt: str
+    tokens: List[int]
     response: str
+    reward_value: float
+    status: str
+    loss_masks: List[int]
+    ref_log_probs: List[float]
+    log_probs: List[float]
+    advantages: List[float]
+    returns: List[float]
     # TODO more
 
 @router.get("/{sample_index}")
