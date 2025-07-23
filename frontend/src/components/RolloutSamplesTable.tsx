@@ -1,5 +1,4 @@
-'use client';
-
+import { assert } from '@/utils/assert';
 import {
   ColumnDef,
   flexRender,
@@ -44,11 +43,10 @@ export function RolloutSamplesTable({ data }: RolloutSamplesTableProps) {
 
   const handleRowClick = (rowData: Row) => {
     const sampleIndex = rowData.sample_index;
-    if (sampleIndex !== undefined && typeof sampleIndex === 'number') {
-      const params = new URLSearchParams(window.location.hash.slice(1));
-      params.set('sample_index', String(sampleIndex));
-      router.push(`/sample#${params.toString()}`);
-    }
+    assert(typeof sampleIndex === 'number');
+    const params = new URLSearchParams(window.location.hash.slice(1));
+    params.set('sample_index', String(sampleIndex));
+    router.push(`/sample#${params.toString()}`);
   };
 
   return (
