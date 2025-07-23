@@ -1,8 +1,7 @@
 'use client';
 
-import { atom, useAtom } from 'jotai';
-
-export const sampleColorFieldAtom = atom('log_probs');
+import { sampleColorFieldAtom } from '@/store/sample';
+import { useAtom } from 'jotai';
 
 const options = ['log_probs', 'ref_log_probs', 'advantages', 'returns', 'loss_masks'];
 

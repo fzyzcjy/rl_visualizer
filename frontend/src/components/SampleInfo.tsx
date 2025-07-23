@@ -1,12 +1,12 @@
 'use client';
 
 import { useAtomValue } from 'jotai';
-import { sampleQueryAtom } from '@/store/sample';
+import { sampleColorFieldAtom, sampleQueryAtom } from '@/store/sample';
 import { tokenizerQueryAtom } from '@/store/metadata';
 import { replaceMulti } from '@/utils/misc';
 import { tokenReplacementMap } from '@/utils/tokenizer_utils';
 import { useState } from 'react';
-import { SampleColorFieldDropdown, sampleColorFieldAtom } from './SampleColorFieldDropdown';
+import { SampleColorFieldDropdown } from './SampleColorFieldDropdown';
 
 interface TokenProps {
   text: string;
