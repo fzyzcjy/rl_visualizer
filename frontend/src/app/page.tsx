@@ -1,13 +1,10 @@
 'use client';
 
+import { ClientOnly } from '@/components/ClientOnly';
 import { RolloutIdInput } from '@/components/RolloutIdInput';
-import { RolloutSamplesTable } from '@/components/RolloutSamplesTable';
-import { rolloutQueryAtom } from '@/store/rollout';
-import { useAtomValue } from 'jotai';
+import { RolloutInfo } from '@/components/RolloutInfo';
 
 export default function HomePage() {
-  const { data, isLoading, isError, error } = useAtomValue(rolloutQueryAtom);
-
   return (
     <div className="min-h-screen flex flex-col items-center justify-start bg-white py-16 px-4">
       <div className="w-full max-w-5xl">
@@ -19,9 +16,9 @@ export default function HomePage() {
         <RolloutIdInput />
 
         <div className="mt-4 w-full">
-          {isLoading && <div>Loading...</div>}
-          {isError && <div>Error: {JSON.stringify(error)}</div>}
-          {data && <RolloutSamplesTable data={data.table_rows} />}
+          <ClientOnly>
+            <RolloutInfo />
+          </ClientOnly>
         </div>
       </div>
     </div>

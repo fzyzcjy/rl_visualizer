@@ -1,5 +1,6 @@
 'use client';
 
+import { ClientOnly } from '@/components/ClientOnly';
 import { SampleIndexInput } from '@/components/SampleIndexInput';
 import { SampleInfo } from '@/components/SampleInfo';
 
@@ -15,7 +16,9 @@ export default function SamplePage() {
         <SampleIndexInput />
 
         <div className="mt-4 w-full">
-          <SampleInfo />
+          <ClientOnly>
+            <SampleInfo />
+          </ClientOnly>
         </div>
       </div>
     </div>
