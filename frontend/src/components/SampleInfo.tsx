@@ -3,19 +3,8 @@
 import { useAtomValue } from 'jotai';
 import { sampleQueryAtom } from '@/store/sample';
 import { tokenizerQueryAtom } from '@/store/metadata';
-
-const tokenReplacementMap: Record<string, string> = {
-  'Ċ': '\n',
-  'Ġ': ' ',
-};
-
-const replaceMulti = (text: string, replacementMap: Record<string, string>) => {
-  let newText = text;
-  for (const [from, to] of Object.entries(replacementMap)) {
-    newText = newText.replace(new RegExp(from, 'g'), to);
-  }
-  return newText;
-};
+import { replaceMulti } from '@/utils/misc';
+import { tokenReplacementMap } from '@/utils/tokenizer_utils';
 
 interface TokenProps {
   text: string;
