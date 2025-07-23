@@ -6,6 +6,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 
 type Row = Record<string, unknown>;
@@ -15,6 +16,8 @@ interface RolloutSamplesTableProps {
 }
 
 export function RolloutSamplesTable({ data }: RolloutSamplesTableProps) {
+  const router = useRouter();
+
   const columns = useMemo<ColumnDef<Row>[]>(() => {
     if (data.length === 0) {
       return [];
@@ -38,6 +41,13 @@ export function RolloutSamplesTable({ data }: RolloutSamplesTableProps) {
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
+
+  const handleRowClick = (rowData: Row) => {
+    const sampleIndex = rowData.sample_index;
+    if (sampleIndex !== undefined && typeof sampleIndex === 'number') {
+      router.push(`/sample#sample_index=${sampleIndex}`);
+    }
+  };
 
   return (
     <div className="overflow-x-auto">
@@ -64,7 +74,11 @@ export function RolloutSamplesTable({ data }: RolloutSamplesTableProps) {
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
+            <tr
+              key={row.id}
+              onClick={() => handleRowClick(row.original)}
+              className="cursor-pointer hover:bg-gray-100"
+            >
               {row.getVisibleCells().map((cell) => (
                 <td
                   key={cell.id}
