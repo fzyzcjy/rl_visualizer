@@ -2,25 +2,55 @@
 
 import { useAtomValue } from 'jotai';
 import { sampleQueryAtom } from '@/store/sample';
+import { tokenizerQueryAtom } from '@/store/metadata';
 
 export function SampleInfo() {
-  const { data, isLoading, isError, error } = useAtomValue(sampleQueryAtom);
+  const {
+    data: sampleData,
+    isLoading: isSampleLoading,
+    isError: isSampleError,
+    error: sampleError,
+  } = useAtomValue(sampleQueryAtom);
+  const {
+    data: tokenizerData,
+    isLoading: isTokenizerLoading,
+    isError: isTokenizerError,
+    error: tokenizerError,
+  } = useAtomValue(tokenizerQueryAtom);
 
-  if (isLoading) {
+  if (isSampleLoading || isTokenizerLoading) {
     return <div>Loading...</div>;
   }
 
-  if (isError) {
-    return <div>Error: {JSON.stringify(error)}</div>;
+  if (isSampleError) {
+    return <div>Error loading sample: {JSON.stringify(sampleError)}</div>;
   }
 
-  if (!data) {
+  if (isTokenizerError) {
+    return <div>Error loading tokenizer: {JSON.stringify(tokenizerError)}</div>;
+  }
+
+  if (!sampleData) {
     return null;
   }
 
+  const decodedTokens = sampleData.tokens
+    .map((token) => tokenizerData?.id_to_str[token] ?? `[UNK:${token}]`)
+    .join('');
+
+  const { tokens, ...otherData } = sampleData;
+
   return (
-    <pre className="w-full p-4 bg-gray-100 border border-gray-300 rounded-md overflow-x-auto">
-      {JSON.stringify(data, null, 2)}
-    </pre>
+    <div>
+      <div className="mb-4">
+        <h2 className="text-lg font-semibold mb-2">Decoded Tokens</h2>
+        <p className="w-full p-4 bg-gray-50 border border-gray-200 rounded-md whitespace-pre-wrap break-words">
+          {decodedTokens}
+        </p>
+      </div>
+      <pre className="w-full p-4 bg-gray-100 border border-ray-300 rounded-md overflow-x-auto">
+        {JSON.stringify(otherData, null, 2)}
+      </pre>
+    </div>
   );
 }
