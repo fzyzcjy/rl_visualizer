@@ -21,3 +21,6 @@ sys.path.append('../python')
 import rl_visualizer
 
 # %%
+# TODO improve demo
+dir_base = '/Users/tom/temp/temp_sglang_server2local/20250723013733'
+
