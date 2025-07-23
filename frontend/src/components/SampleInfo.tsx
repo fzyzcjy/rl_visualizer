@@ -4,15 +4,16 @@ import { useAtomValue } from 'jotai';
 import { sampleQueryAtom } from '@/store/sample';
 import { tokenizerQueryAtom } from '@/store/metadata';
 
-const specialCharMapping: Record<string, string> = {
-  'Ċ': '\n',
+const tokenReplacementMap: Record<string, string> = {
+  'Ċ': '
+',
   'Ġ': ' ',
 };
 
-const replaceSpecialChars = (text: string) => {
+const replaceMulti = (text: string, replacementMap: Record<string, string>) => {
   let newText = text;
-  for (const [special, replacement] of Object.entries(specialCharMapping)) {
-    newText = newText.replace(new RegExp(special, 'g'), replacement);
+  for (const [from, to] of Object.entries(replacementMap)) {
+    newText = newText.replace(new RegExp(from, 'g'), to);
   }
   return newText;
 };
@@ -25,7 +26,7 @@ interface TokenProps {
 }
 
 const Token: React.FC<TokenProps> = ({ text, logProb, minLogProb, maxLogProb }) => {
-  const cleanedText = replaceSpecialChars(text);
+  const cleanedText = replaceMulti(text, tokenReplacementMap);
   let style = {};
 
   if (logProb !== undefined) {
