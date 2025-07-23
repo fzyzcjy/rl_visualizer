@@ -14,14 +14,34 @@ export type HttpValidationError = {
  * RolloutGetResponse
  */
 export type RolloutGetResponse = {
-    [key: string]: unknown;
+    /**
+     * Table Rows
+     */
+    table_rows: Array<{
+        [key: string]: unknown;
+    }>;
 };
 
 /**
  * SampleGetResponse
  */
 export type SampleGetResponse = {
-    [key: string]: unknown;
+    /**
+     * Rollout Id
+     */
+    rollout_id: number;
+    /**
+     * Sample Index
+     */
+    sample_index: number;
+    /**
+     * Prompt
+     */
+    prompt: string;
+    /**
+     * Response
+     */
+    response: string;
 };
 
 /**
@@ -50,7 +70,12 @@ export type GetApiSampleSampleIndexGetData = {
          */
         sample_index: number;
     };
-    query?: never;
+    query: {
+        /**
+         * Run Id
+         */
+        run_id: string;
+    };
     url: '/api/sample/{sample_index}';
 };
 
@@ -80,7 +105,12 @@ export type GetApiRolloutRolloutIdGetData = {
          */
         rollout_id: number;
     };
-    query?: never;
+    query: {
+        /**
+         * Run Id
+         */
+        run_id: string;
+    };
     url: '/api/rollout/{rollout_id}';
 };
 
