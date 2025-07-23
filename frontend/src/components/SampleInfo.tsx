@@ -62,10 +62,9 @@ export function SampleInfo() {
   const { id_to_str } = tokenizerQuery.data;
 
   const requestLength = tokens.length - sampleQuery.data.response_length;
-  const minColorValue = Math.min(...log_probs);
-  const maxColorValue = Math.max(...log_probs);
-
-  const { tokens: _, ...otherData } = sampleQuery.data;
+  const colorValues = log_probs;
+  const minColorValue = Math.min(...colorValues);
+  const maxColorValue = Math.max(...colorValues);
 
   return (
     <div>
@@ -87,7 +86,7 @@ export function SampleInfo() {
         </p>
       </div>
       <pre className="w-full p-4 bg-gray-100 border border-ray-300 rounded-md overflow-x-auto">
-        {JSON.stringify(otherData, null, 2)}
+        {JSON.stringify(sampleQuery.data, null, 2)}
       </pre>
     </div>
   );
