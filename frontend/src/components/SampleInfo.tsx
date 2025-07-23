@@ -80,6 +80,7 @@ export function SampleInfo() {
                 logProb={responseIndex !== undefined ? log_probs[responseIndex] : undefined}
                 minLogProb={minLogProb}
                 maxLogProb={maxLogProb}
+              />
             );
           })}
         </p>
