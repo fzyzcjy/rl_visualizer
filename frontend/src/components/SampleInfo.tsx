@@ -3,7 +3,7 @@
 import { useAtomValue } from 'jotai';
 import { sampleColorFieldAtom, sampleQueryAtom } from '@/store/sample';
 import { tokenizerQueryAtom } from '@/store/metadata';
-import { replaceMulti } from '@/utils/misc';
+import { assert, replaceMulti } from '@/utils/misc';
 import { tokenReplacementMap } from '@/utils/tokenizer_utils';
 import { useState } from 'react';
 import { SampleColorFieldDropdown } from './SampleColorFieldDropdown';
@@ -69,10 +69,7 @@ export function SampleInfo() {
 
   const requestLength = tokens.length - sampleQuery.data.response_length;
   const colorValues = sampleQuery.data[sampleColorField as keyof typeof sampleQuery.data] as number[] | undefined;
-
-  if (!colorValues) {
-    return <div>Invalid color value key: {sampleColorField}</div>;
-  }
+  assert(!!colorValues);
 
   const minColorValue = Math.min(...colorValues);
   const maxColorValue = Math.max(...colorValues);
