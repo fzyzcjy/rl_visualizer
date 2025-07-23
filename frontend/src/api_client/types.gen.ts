@@ -83,6 +83,14 @@ export type SampleGetResponse = {
      */
     log_probs: Array<number>;
     /**
+     * Ref Probs
+     */
+    ref_probs: Array<number>;
+    /**
+     * Probs
+     */
+    probs: Array<number>;
+    /**
      * Advantages
      */
     advantages: Array<number>;

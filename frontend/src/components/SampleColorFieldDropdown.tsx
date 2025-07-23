@@ -3,7 +3,15 @@
 import { sampleColorFieldAtom } from '@/store/sample';
 import { useAtom } from 'jotai';
 
-const options = ['log_probs', 'ref_log_probs', 'advantages', 'returns', 'loss_masks'];
+const options = [
+  'probs',
+  'ref_probs',
+  'advantages',
+  'returns',
+  'loss_masks',
+  'log_probs',
+  'ref_log_probs',
+];
 
 export function SampleColorFieldDropdown() {
   const [sampleColorField, setSampleColorField] = useAtom(sampleColorFieldAtom);
